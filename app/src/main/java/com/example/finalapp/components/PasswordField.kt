@@ -1,5 +1,7 @@
 package com.example.finalapp.components
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -13,13 +15,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun PasswordField(
     value: String,
     onChange: (String) -> Unit,
     label: String = "Senha",
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var passwordVisibility by remember {
         mutableStateOf(false)
@@ -48,6 +51,9 @@ fun PasswordField(
                 )
             }
         },
-        modifier = modifier
+        modifier = Modifier
+            .then(modifier)
+            .fillMaxWidth()
+            .padding(vertical = 10.dp)
     )
 }

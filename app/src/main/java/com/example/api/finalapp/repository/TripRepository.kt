@@ -10,14 +10,9 @@ class TripRepository(app: Application) {
     private val tripDao: TripDao = AppDatabaseConnection
         .getDB(app).tripDao()
 
-    suspend fun save(trip: Trip) {
-        if (trip.id == 0) {
-            tripDao.insert(trip)
-        }
-        else {
-            tripDao.update(trip)
-        }
-    }
+    suspend fun create(trip: Trip): Int = tripDao.insert(trip)
+
+    suspend fun update(trip: Trip) = tripDao.update(trip)
 
     suspend fun findAll(): List<Trip> = tripDao.findAll()
 

@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.example.finalapp.components.PasswordField
 import com.example.finalapp.viewmodels.UserViewModel
 import com.example.finalapp.R
+import com.example.finalapp.components.TextField
 import com.example.finalapp.navigation.HOME_ROUTE
 import com.example.finalapp.navigation.ScreenManager
 
@@ -74,13 +75,10 @@ fun Login(
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
             ) {
-                OutlinedTextField(
+                TextField(
                     value = user.email,
-                    label = { Text(text = "E-mail") },
-                    onValueChange = { user.email = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
+                    onChange = { user.email = it },
+                    label = "E-mail",
                 )
             }
             Column(
@@ -91,9 +89,6 @@ fun Login(
                 PasswordField(
                     value = user.password,
                     onChange = { user.password = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
                 )
             }
             Column(

@@ -2,17 +2,17 @@ package com.example.api.finalapp.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
+import java.time.LocalDate
 
 @Entity
 data class Trip(
     val tripTypeId: Int?,
     val userId: Int?,
     val destination: String,
-    val departureDate: Date,
-    val arrivalDate: Date,
-    val budget: Double,
-) {
+    val departureDate: LocalDate?,
+    val arrivalDate: LocalDate?,
+    val budget: Double?,
+) : IBaseModel {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var id: Int = -1
 }

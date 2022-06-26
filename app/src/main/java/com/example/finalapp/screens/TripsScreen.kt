@@ -1,5 +1,7 @@
 package com.example.finalapp.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +19,9 @@ import androidx.navigation.NavHostController
 import com.example.api.finalapp.model.Trip
 import com.example.finalapp.navigation.ScreenManager
 import java.text.DecimalFormat
-import java.util.*
+import java.time.LocalDate
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TripsScreen(navController: NavHostController, userId: Int) {
     Column {
@@ -28,17 +31,18 @@ fun TripsScreen(navController: NavHostController, userId: Int) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TripsList(onClickListItem: (tripId: Int) -> Unit) {
     val trips = listOf(
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Noruega", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Escandinávia", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Espanha", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Luxemburgo", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = Date(), arrivalDate = Date(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Noruega", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Escandinávia", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Espanha", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Luxemburgo", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
+        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
     )
 
     LazyColumn {

@@ -4,7 +4,7 @@ import androidx.room.*
 import com.example.api.finalapp.model.TripType
 
 @Dao
-interface TripTypeDao {
+interface TripTypeDao : IBaseDao {
     @Insert
     suspend fun insert(tripType: TripType)
 

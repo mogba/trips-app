@@ -11,7 +11,7 @@ class TripTypeRepository(app: Application) {
         .getDB(app).tripTypeDao()
 
     suspend fun save(tripType: TripType) {
-        if (tripType.id == 0) {
+        if (tripType.id != null && tripType.id <= 0) {
             tripTypeDao.insert(tripType)
         }
         else {

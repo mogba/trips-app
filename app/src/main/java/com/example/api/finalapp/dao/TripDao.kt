@@ -4,9 +4,9 @@ import androidx.room.*
 import com.example.api.finalapp.model.Trip
 
 @Dao
-interface TripDao {
+interface TripDao : IBaseDao {
     @Insert
-    suspend fun insert(trip: Trip)
+    suspend fun insert(trip: Trip): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(trip: Trip)

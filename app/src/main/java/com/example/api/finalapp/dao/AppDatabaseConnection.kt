@@ -1,12 +1,18 @@
 package com.example.api.finalapp.dao
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.example.api.finalapp.converters.DateConverter
 import com.example.api.finalapp.model.Trip
+import com.example.api.finalapp.model.TripType
 
-@Database(entities = arrayOf(Trip::class), version = 1 )
+@Database(
+    entities = [
+        Trip::class,
+        TripType::class
+    ],
+    version = 1
+)
 abstract class AppDatabaseConnection: RoomDatabase() {
 
     abstract fun tripDao(): TripDao
