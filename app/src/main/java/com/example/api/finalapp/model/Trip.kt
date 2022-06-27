@@ -12,7 +12,7 @@ data class Trip(
     val departureDate: LocalDate?,
     val arrivalDate: LocalDate?,
     val budget: Double?,
-) : IBaseModel {
+) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = -1
 }

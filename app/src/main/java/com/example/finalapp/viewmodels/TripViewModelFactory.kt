@@ -5,12 +5,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.api.finalapp.repository.TripRepository
 
-class RegisterTripViewModelFactory(
-    val app: Application
+class TripViewModelFactory(
+    private val app: Application
 ): ViewModelProvider.Factory {
     override fun <T: ViewModel> create(modelClass: Class<T>): T {
         val repository = TripRepository(app)
-        val model = RegisterTripViewModel(repository)
+        val model = TripViewModel(repository)
         return model as T
     }
 }

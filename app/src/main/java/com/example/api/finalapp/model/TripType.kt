@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class TripType(
     val name: String
-) : IBaseModel {
+) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = -1
 }

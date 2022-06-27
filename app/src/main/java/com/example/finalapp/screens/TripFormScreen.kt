@@ -1,5 +1,6 @@
 package com.example.finalapp.screens
 
+import android.app.Application
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -19,17 +20,20 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.finalapp.components.DatePickerField
 import com.example.finalapp.components.TextField
-import com.example.finalapp.viewmodels.RegisterTripViewModel
+import com.example.finalapp.viewmodels.TripViewModel
+import com.example.finalapp.viewmodels.TripViewModelFactory
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TripFormScreen(navController: NavHostController, tripId: Int) {
     val context = LocalContext.current
+    val app = context.applicationContext as Application
+
     val columnModifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 20.dp)
 
-    val trip: RegisterTripViewModel = viewModel()
+    val trip: TripViewModel = viewModel(factory = TripViewModelFactory(app))
     val topBarTitle = if (trip.id <= 0) "Adicionar viagem" else "Editar viagem"
 
     Scaffold(

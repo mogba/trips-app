@@ -11,7 +11,7 @@ import com.example.api.finalapp.model.TripType
         Trip::class,
         TripType::class
     ],
-    version = 1
+    version = 2
 )
 abstract class AppDatabaseConnection: RoomDatabase() {
 

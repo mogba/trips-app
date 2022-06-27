@@ -1,5 +1,6 @@
 package com.example.finalapp.screens
 
+import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -11,13 +12,17 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.api.finalapp.model.Trip
 import com.example.finalapp.navigation.ScreenManager
+import com.example.finalapp.viewmodels.TripViewModel
+import com.example.finalapp.viewmodels.TripViewModelFactory
 import java.text.DecimalFormat
 import java.time.LocalDate
 
@@ -25,15 +30,18 @@ import java.time.LocalDate
 @Composable
 fun TripsScreen(navController: NavHostController, userId: Int) {
     Column {
-        TripsList(onClickListItem = { tripId ->
-            navController.navigate(ScreenManager.TripForm.routeWithArgs(tripId))
-        })
+        TripsList(
+            userId,
+            onClickListItem = { tripId ->
+                navController.navigate(ScreenManager.TripForm.routeWithArgs(tripId))
+            }
+        )
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TripsList(onClickListItem: (tripId: Int) -> Unit) {
+fun TripsList(userId: Int, onClickListItem: (tripId: Int) -> Unit) {
     val trips = listOf(
         Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Noruega", tripTypeId = 1, budget = 1000.00),
         Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Escandinávia", tripTypeId = 1, budget = 1000.00),
@@ -45,11 +53,18 @@ fun TripsList(onClickListItem: (tripId: Int) -> Unit) {
         Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
     )
 
+    val ctx = LocalContext.current
+    val app = ctx.applicationContext as Application
+
+    val tripViewModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
+
+//    val trips = tripViewModel.findAll(userId)
+
     LazyColumn {
         items(items = trips) { trip ->
             TripListItem(
                 trip,
-                onClick = onClickListItem,
+                onClick = { onClickListItem(trip.id) },
             )
         }
     }

@@ -4,19 +4,19 @@ import androidx.room.*
 import com.example.api.finalapp.model.Trip
 
 @Dao
-interface TripDao : IBaseDao {
+interface TripDao {
     @Insert
-    suspend fun insert(trip: Trip): Int
+    fun insert(trip: Trip): Int
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun update(trip: Trip)
+    fun update(trip: Trip)
 
     @Delete
-    suspend fun delete(trip: Trip)
+    fun delete(trip: Trip)
 
-    @Query("select * from Trip order by id, destination")
-    suspend fun findAll(): List<Trip>
+    @Query("select * from Trip where userId = :userId order by id, destination")
+    fun findAll(userId: Int): List<Trip>
 
     @Query("select * from Trip where id = :id")
-    suspend fun findById(id: Int): Trip?
+    fun findById(id: Int): Trip?
 }
