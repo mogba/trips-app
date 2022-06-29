@@ -28,7 +28,7 @@ import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TripsScreen(navController: NavHostController, userId: Int) {
+fun TripsScreen(navController: NavHostController, userId: Long) {
     Column {
         TripsList(
             userId,
@@ -41,7 +41,7 @@ fun TripsScreen(navController: NavHostController, userId: Int) {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TripsList(userId: Int, onClickListItem: (tripId: Int) -> Unit) {
+fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
     val trips = listOf(
         Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Noruega", tripTypeId = 1, budget = 1000.00),
         Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Escandinávia", tripTypeId = 1, budget = 1000.00),
@@ -73,7 +73,7 @@ fun TripsList(userId: Int, onClickListItem: (tripId: Int) -> Unit) {
 @Composable
 fun TripListItem(
     trip: Trip,
-    onClick: (tripId: Int) -> Unit
+    onClick: (tripId: Long) -> Unit
 ) {
     val context = LocalContext.current
     val df = DecimalFormat("0.00")

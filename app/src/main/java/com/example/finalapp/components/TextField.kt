@@ -22,6 +22,6 @@ fun TextField(
         modifier = Modifier
             .then(modifier)
             .fillMaxWidth()
-            .padding(vertical = 10.dp),
+            .padding(vertical = 20.dp),
     )
 }

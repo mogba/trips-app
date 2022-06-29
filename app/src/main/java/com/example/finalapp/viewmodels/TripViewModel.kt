@@ -13,9 +13,9 @@ import java.time.LocalDate
 class TripViewModel(
     private val repository: TripRepository
 ): ViewModel() {
-    var id by mutableStateOf(-1)
-    var tripTypeId by mutableStateOf(-1)
-    var userId by mutableStateOf(-1)
+    var id by mutableStateOf(-1L)
+    var tripTypeId by mutableStateOf(-1L)
+    var userId by mutableStateOf(-1L)
     var destination by mutableStateOf("")
     var departureDate by mutableStateOf<LocalDate?>(null)
     var arrivalDate by mutableStateOf<LocalDate?>(null)
@@ -33,5 +33,5 @@ class TripViewModel(
         }
     }
 
-    fun findAll(userId: Int): List<Trip> = repository.findAll(userId)
+    fun findAll(userId: Long): List<Trip> = repository.findAll(userId)
 }

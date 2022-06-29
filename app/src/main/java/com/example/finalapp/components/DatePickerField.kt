@@ -6,8 +6,10 @@ import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.icons.Icons
@@ -51,17 +53,19 @@ fun DatePickerField(
     )
 
     Box(
-        Modifier.clickable(
-            onClick = { datePickerDialog.show() }
-        )
+        Modifier
+            .padding(top = 20.dp)
+            .clickable { datePickerDialog.show() }
     ) {
-        TextField(
+        OutlinedTextField(
             value = date.value,
             onValueChange = { s -> onChange(LocalDate.parse(s, formatter)) },
             singleLine = true,
             enabled = false,
             label = { Text(text = label) },
             modifier = Modifier
+                .padding(bottom = 0.dp)
+                .fillMaxWidth()
                 .clickable { datePickerDialog.show() },
             leadingIcon = {
                 Icon(

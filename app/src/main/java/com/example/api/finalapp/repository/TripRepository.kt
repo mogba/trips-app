@@ -10,13 +10,13 @@ class TripRepository(app: Application) {
     private val tripDao: TripDao = AppDatabaseConnection
         .getDB(app).tripDao()
 
-    fun create(trip: Trip): Int = tripDao.insert(trip)
+    fun create(trip: Trip): Long = tripDao.insert(trip)
 
     fun update(trip: Trip) = tripDao.update(trip)
 
-    fun findAll(userId: Int): List<Trip> = tripDao.findAll(userId)
+    fun findAll(userId: Long): List<Trip> = tripDao.findAll(userId)
 
-    fun findById(id: Int) = tripDao.findById(id)
+    fun findById(id: Long) = tripDao.findById(id)
 
     fun delete(trip: Trip) = tripDao.delete(trip)
 }

@@ -6,13 +6,13 @@ import java.time.LocalDate
 
 @Entity
 data class Trip(
-    val tripTypeId: Int?,
-    val userId: Int?,
+    val tripTypeId: Long?,
+    val userId: Long?,
     val destination: String,
     val departureDate: LocalDate?,
     val arrivalDate: LocalDate?,
     val budget: Double?,
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = -1
+    var id: Long = -1
 }

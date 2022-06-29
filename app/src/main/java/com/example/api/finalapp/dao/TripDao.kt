@@ -6,7 +6,7 @@ import com.example.api.finalapp.model.Trip
 @Dao
 interface TripDao {
     @Insert
-    fun insert(trip: Trip): Int
+    fun insert(trip: Trip): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(trip: Trip)
@@ -15,8 +15,8 @@ interface TripDao {
     fun delete(trip: Trip)
 
     @Query("select * from Trip where userId = :userId order by id, destination")
-    fun findAll(userId: Int): List<Trip>
+    fun findAll(userId: Long): List<Trip>
 
     @Query("select * from Trip where id = :id")
-    fun findById(id: Int): Trip?
+    fun findById(id: Long): Trip?
 }

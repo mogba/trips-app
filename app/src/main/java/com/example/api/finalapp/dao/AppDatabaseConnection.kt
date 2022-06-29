@@ -13,6 +13,7 @@ import com.example.api.finalapp.model.TripType
     ],
     version = 2
 )
+@TypeConverters(DateConverter::class)
 abstract class AppDatabaseConnection: RoomDatabase() {
 
     abstract fun tripDao(): TripDao

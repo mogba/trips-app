@@ -2,9 +2,9 @@ package com.example.finalapp.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.finalapp.components.PasswordField
+import com.example.finalapp.components.TextField
 import com.example.finalapp.viewmodels.UserViewModel
 
 @Composable
@@ -20,50 +21,51 @@ fun RegisterScreen(navController: NavHostController) {
     Column() {
         val user: UserViewModel = viewModel()
 
-        Register(
-            user,
-            onSuccessRegisterRequest = {
-                navController.navigateUp()
-            }
-        )
-    }
-}
-
-@Composable
-fun Register(
-    user: UserViewModel,
-    onSuccessRegisterRequest: () -> Unit
-) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.fillMaxSize()
-    ) {
         val context = LocalContext.current
 
-        Column(modifier = Modifier.weight(1f)) {
+        val columnModifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp)
+
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = { Text(text = "Criar cadastro") },
+                    navigationIcon = if (navController.previousBackStackEntry != null) {
+                        {
+                            IconButton(onClick = { navController.navigateUp() }) {
+                                Icon(
+                                    imageVector = Icons.Filled.ArrowBack,
+                                    contentDescription = "Voltar"
+                                )
+                            }
+                        }
+                    } else {
+                        null
+                    }
+                )
+            }
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp)
             ) {
-                OutlinedTextField(
-                    value = user.email,
-                    label = { Text(text = "Usuário") },
-                    onValueChange = { user.username = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                )
-                OutlinedTextField(
-                    value = user.email,
-                    label = { Text(text = "E-mail") },
-                    onValueChange = { user.email = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp)
-                )
-
+                Column(modifier = columnModifier) {
+                    TextField(
+                        value = user.username,
+                        onChange = { user.username = it },
+                        label = "Usuário",
+                    )
+                }
+                Column(modifier = columnModifier) {
+                    TextField(
+                        value = user.email,
+                        onChange = { user.email = it },
+                        label = "E-mail",
+                    )
+                }
+                Column(modifier = columnModifier) {
                     PasswordField(
                         value = user.password,
                         onChange = { user.password = it },
@@ -71,7 +73,8 @@ fun Register(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
                     )
-
+                }
+                Column(modifier = columnModifier) {
                     PasswordField(
                         label = "Confirmar senha",
                         value = user.passwordConfirmation,
@@ -80,31 +83,27 @@ fun Register(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
                     )
-            }
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(10.dp)
-            ) {
-                Button(
-                    onClick = {
-                        Toast.makeText(
-                            context,
-                            "Registro criado com sucesso",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        onSuccessRegisterRequest()
-                    }
-                ) {
-                    Text(text = "Cadastrar")
                 }
-                Button(
-                    onClick = {
-                        onSuccessRegisterRequest()
-                    }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = columnModifier
                 ) {
-                    Text(text = "Voltar")
+                    Button(
+                        onClick = {
+                            Toast.makeText(
+                                context,
+                                "Registro criado com sucesso",
+                                Toast.LENGTH_LONG
+                            ).show()
+                            navController.navigateUp()
+                        },
+                        modifier = Modifier
+                            .height(65.dp)
+                            .fillMaxWidth()
+                            .padding(top = 10.dp),
+                    ) {
+                        Text(text = "Cadastrar")
+                    }
                 }
             }
         }
