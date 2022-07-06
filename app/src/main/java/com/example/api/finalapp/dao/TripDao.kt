@@ -1,22 +1,28 @@
 package com.example.api.finalapp.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.api.finalapp.model.Trip
 
 @Dao
 interface TripDao {
     @Insert
-    fun insert(trip: Trip): Long
+    suspend fun insert(trip: Trip): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(trip: Trip)
+    suspend fun update(trip: Trip)
 
-    @Delete
-    fun delete(trip: Trip)
-
-    @Query("select * from Trip where userId = :userId order by id, destination")
-    fun findAll(userId: Long): List<Trip>
+    @Query("""
+        select *
+        from Trip
+        where userId = :userId
+        order by id, destination
+    """)
+    fun findAll(userId: Long): LiveData<List<Trip>>
 
     @Query("select * from Trip where id = :id")
-    fun findById(id: Long): Trip?
+    suspend fun findById(id: Long): Trip?
+
+    @Delete
+    suspend fun delete(trip: Trip)
 }

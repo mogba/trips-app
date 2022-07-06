@@ -9,8 +9,8 @@ data class Trip(
     val tripTypeId: Long?,
     val userId: Long?,
     val destination: String,
-    val departureDate: LocalDate?,
-    val arrivalDate: LocalDate?,
+    val departureDate: String,
+    val arrivalDate: String?,
     val budget: Double?,
 ) {
     @PrimaryKey(autoGenerate = true)

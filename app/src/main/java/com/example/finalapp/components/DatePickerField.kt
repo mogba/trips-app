@@ -27,25 +27,27 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DatePickerField(
     label: String,
-    value: LocalDate?,
-    onChange: (LocalDate) -> Unit,
+    value: String?,
+    onChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
-    val formatter = DateTimeFormatter.ofPattern("DD/MM/yyyy")
+    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    val date = remember {
-        mutableStateOf(value?.format(formatter) ?: "")
-    }
+    val date = remember { mutableStateOf(value ?: "") }
+    val dateObject =
+        if (!value.isNullOrBlank()) LocalDate.parse(value, formatter)
+        else LocalDate.now()
 
-    val year: Int = value?.year ?: LocalDate.now().year
-    val month: Int = value?.monthValue ?: LocalDate.now().monthValue
-    val day: Int = value?.dayOfMonth ?: LocalDate.now().dayOfMonth
+    val year: Int = dateObject.year
+    val month: Int = dateObject.monthValue
+    val day: Int = dateObject.dayOfMonth
 
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, newYear: Int, newMonth: Int, newDayOfMonth: Int ->
             date.value = LocalDate.of(newYear, newMonth, newDayOfMonth).format(formatter)
+            onChange(date.value)
         },
         year,
         month,
@@ -59,7 +61,7 @@ fun DatePickerField(
     ) {
         OutlinedTextField(
             value = date.value,
-            onValueChange = { s -> onChange(LocalDate.parse(s, formatter)) },
+            onValueChange = {},
             singleLine = true,
             enabled = false,
             label = { Text(text = label) },

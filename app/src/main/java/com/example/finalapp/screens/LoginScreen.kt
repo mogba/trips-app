@@ -117,6 +117,8 @@ fun Login(
                         onRegisterRequest()
                     }
                 )
+                
+                Spacer(modifier = Modifier.height(10.dp))
 
                 ClickableText(
                     text = AnnotatedString("Esqueci minha senha"),

@@ -13,17 +13,15 @@ import com.example.api.finalapp.model.TripType
     ],
     version = 2
 )
-@TypeConverters(DateConverter::class)
-abstract class AppDatabaseConnection: RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
 
     abstract fun tripDao(): TripDao
     abstract fun tripTypeDao(): TripTypeDao
 
-    // Desing Pattern - Singleton
     companion object {
-        var connection: AppDatabaseConnection? = null
+        var connection: AppDatabase? = null
 
-        fun getDB(context: Context): AppDatabaseConnection {
+        fun getDB(context: Context): AppDatabase {
             val temp = connection
 
             if (temp != null) {
@@ -32,8 +30,8 @@ abstract class AppDatabaseConnection: RoomDatabase() {
             else {
                 val instance = Room.databaseBuilder(
                     context,
-                    AppDatabaseConnection::class.java,
-                    "meu-database"
+                    AppDatabase::class.java,
+                    "trips-db"
                 ).build()
                 connection = instance
                 return instance

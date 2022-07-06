@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.finalapp.components.DatePickerField
@@ -94,10 +95,12 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
                     label = "Orçamento",
                     value = trip.budget.toString(),
                     onChange = {
-                        if (!it.isNullOrBlank()) {
+                        val newValue = it.toDoubleOrNull()
+                        if (!it.isNullOrBlank() && newValue != null) {
                             trip.budget = it.toDouble()
                         }
                     },
+                    isNumberInput = true,
                 )
             }
             Column(
@@ -108,7 +111,7 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
                     onClick = {
                         if (
                             trip.destination.isNullOrBlank() ||
-                            trip.tripTypeId <= 0 ||
+//                            trip.tripTypeId <= 0 ||
                             trip.departureDate == null
                         ) {
                             Toast.makeText(

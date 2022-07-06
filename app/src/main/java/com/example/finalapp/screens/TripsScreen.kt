@@ -2,8 +2,10 @@ package com.example.finalapp.screens
 
 import android.app.Application
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,13 +13,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.api.finalapp.model.Trip
 import com.example.finalapp.navigation.ScreenManager
@@ -42,27 +50,17 @@ fun TripsScreen(navController: NavHostController, userId: Long) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
-    val trips = listOf(
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Noruega", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Escandinávia", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Espanha", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Luxemburgo", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-        Trip(userId = null, departureDate = LocalDate.now(), arrivalDate = LocalDate.now(), destination = "Maldivas", tripTypeId = 1, budget = 1000.00),
-    )
-
     val ctx = LocalContext.current
     val app = ctx.applicationContext as Application
 
     val tripViewModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
 
-//    val trips = tripViewModel.findAll(userId)
+    val trips by tripViewModel.findAll(userId).observeAsState(listOf());
 
     LazyColumn {
         items(items = trips) { trip ->
             TripListItem(
+                tripViewModel,
                 trip,
                 onClick = { onClickListItem(trip.id) },
             )
@@ -72,11 +70,21 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
 
 @Composable
 fun TripListItem(
+    tripViewModel: TripViewModel,
     trip: Trip,
     onClick: (tripId: Long) -> Unit
 ) {
     val context = LocalContext.current
     val df = DecimalFormat("0.00")
+
+    var toDelete by remember { mutableStateOf(false) }
+    val showActionDialog = remember { mutableStateOf(true) }
+
+    var dateCaption = "Data de partida: ${trip.departureDate}"
+
+    if (!trip.arrivalDate.isNullOrBlank()) {
+        dateCaption += "- Data de chegada: ${trip.arrivalDate}"
+    }
 
     Card(
         elevation = 8.dp,
@@ -86,8 +94,18 @@ fun TripListItem(
             .clickable {
                 onClick(if (trip.id == null) -1 else trip.id)
             }
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = {
+//                        navController.navigate("despesas/" + viagem.id + "/" + viagem.destino)
+                    },
+                    onLongPress = {
+                        toDelete = true;
+                    },
+                )
+            }
     ) {
-        Row() {
+        Row {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -95,7 +113,7 @@ fun TripListItem(
             ) {
                 Text(text = trip.destination)
                 Text(
-                    text = "Data de partida: ${trip.departureDate} - Data de chegada: ${trip.arrivalDate}",
+                    text = dateCaption,
                     style = MaterialTheme.typography.caption
                 )
             }
@@ -106,5 +124,68 @@ fun TripListItem(
                     .padding(16.dp)
             )
         }
+    }
+
+    if (toDelete) {
+        AlertDialog(
+            onDismissRequest = { showActionDialog.value = false },
+            text = {
+                Text(
+                    "Qual ação deseja?",
+                    style = MaterialTheme.typography.h6,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        tripViewModel.delete(trip)
+                        Toast
+                            .makeText(
+                                context,
+                                "Viagem apagada!",
+                                Toast.LENGTH_SHORT
+                            )
+                            .show()
+                        toDelete = false
+                    }
+                ) {
+                    Text(
+                        "Excluir viagem!", fontSize = 18.sp,
+                        color = Color.White
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showActionDialog.value = false
+                        toDelete = false
+                    }
+                ) {
+                    Text(
+                        "Nada",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                TextButton(
+                    onClick = {
+                        showActionDialog.value = false
+                        toDelete = false
+                        onClick(trip.id)
+                    }
+                ) {
+                    Text(
+                        "Editar viagem",
+                        color = Color.White,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            },
+        )
     }
 }
