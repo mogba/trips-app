@@ -14,5 +14,5 @@ data class Trip(
     val budget: Double?,
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Long = -1
+    var id: Long = 0
 }

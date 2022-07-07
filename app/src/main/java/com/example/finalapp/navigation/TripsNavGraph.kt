@@ -11,13 +11,13 @@ fun NavGraphBuilder.tripsNavGraph(navController: NavHostController) {
         route = TRIPS_ROUTE,
     ) {
         composable(ScreenManager.Trips.route) {
-            TripsScreen(navController, -1)
+            TripsScreen(navController, 0)
         }
         composable(
             ScreenManager.TripForm.route,
-            arguments = listOf(navArgument("tripId") { defaultValue = "-1" }),
+            arguments = listOf(navArgument("tripId") { defaultValue = "0" }),
         ) { backStackEntry ->
-            TripFormScreen(navController, backStackEntry.arguments?.getInt("tripId") ?: -1)
+            TripFormScreen(navController, backStackEntry.arguments?.getInt("tripId") ?: 0)
         }
     }
 }

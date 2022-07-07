@@ -54,7 +54,6 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
     val app = ctx.applicationContext as Application
 
     val tripViewModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
-
     val trips by tripViewModel.findAll(userId).observeAsState(listOf());
 
     LazyColumn {
@@ -83,7 +82,7 @@ fun TripListItem(
     var dateCaption = "Data de partida: ${trip.departureDate}"
 
     if (!trip.arrivalDate.isNullOrBlank()) {
-        dateCaption += "- Data de chegada: ${trip.arrivalDate}"
+        dateCaption += " - Data de chegada: ${trip.arrivalDate}"
     }
 
     Card(

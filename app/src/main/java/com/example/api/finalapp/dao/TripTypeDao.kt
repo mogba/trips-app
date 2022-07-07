@@ -1,5 +1,6 @@
 package com.example.api.finalapp.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.api.finalapp.model.TripType
 
@@ -15,7 +16,7 @@ interface TripTypeDao {
     suspend fun delete(tripType: TripType)
 
     @Query("select * from TripType order by id, name")
-    suspend fun findAll(): List<TripType>
+    fun findAll(): LiveData<List<TripType>>
 
     @Query("select * from TripType where id = :id")
     suspend fun findById(id: Int): TripType?

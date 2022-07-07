@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,7 +17,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.api.finalapp.model.TripType
 import com.example.finalapp.components.*
+import com.example.finalapp.viewmodels.TripTypeViewModel
+import com.example.finalapp.viewmodels.TripTypeViewModelFactory
 import com.example.finalapp.viewmodels.TripViewModel
 import com.example.finalapp.viewmodels.TripViewModelFactory
 
@@ -26,15 +30,16 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
     val context = LocalContext.current
     val app = context.applicationContext as Application
 
+    val tripTypeModel: TripTypeViewModel = viewModel(factory = TripTypeViewModelFactory(app))
+    val tripTypes by tripTypeModel.findAll().observeAsState(listOf())
+    var selectedTripType: TripType? by remember { mutableStateOf(null) }
+
+    val tripModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
+    val topBarTitle = if (tripModel.id <= 0) "Adicionar viagem" else "Editar viagem"
+
     val columnModifier = Modifier
         .fillMaxWidth()
         .padding(horizontal = 20.dp)
-
-    val tripTypeOptions = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
-    var selectedTripType by remember { mutableStateOf("") }
-
-    val trip: TripViewModel = viewModel(factory = TripViewModelFactory(app))
-    val topBarTitle = if (trip.id <= 0) "Adicionar viagem" else "Editar viagem"
 
     Scaffold(
         topBar = {
@@ -44,44 +49,44 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
         Column {
             Column(modifier = columnModifier) {
                 TextField(
-                    value = trip.destination,
-                    onChange = { trip.destination = it },
+                    value = tripModel.destination,
+                    onChange = { tripModel.destination = it },
                     label = "Destino *",
                 )
             }
             Column(modifier = columnModifier) {
                 DropDownField(
                     label = "Tipo de viagem *",
-                    options = tripTypeOptions,
+                    options = tripTypes,
                     value = selectedTripType,
                     onValueChange = {
-                        // trip.tripTypeId = it
                         selectedTripType = it
+                        tripModel.tripTypeId = selectedTripType!!.id
                     }
                 )
             }
             Column(modifier = columnModifier) {
                 DatePickerField(
                     label = "Data de partida *",
-                    value = trip.departureDate,
-                    onChange = { trip.departureDate = it },
+                    value = tripModel.departureDate,
+                    onChange = { tripModel.departureDate = it },
                 )
             }
             Column(modifier = columnModifier) {
                 DatePickerField(
                     label = "Data de chegada",
-                    value = trip.arrivalDate,
-                    onChange = { trip.arrivalDate = it },
+                    value = tripModel.arrivalDate,
+                    onChange = { tripModel.arrivalDate = it },
                 )
             }
             Column(modifier = columnModifier) {
                 TextField(
                     label = "Orçamento",
-                    value = trip.budget.toString(),
+                    value = tripModel.budget.toString(),
                     onChange = {
                         val newValue = it.toDoubleOrNull()
                         if (!it.isNullOrBlank() && newValue != null) {
-                            trip.budget = it.toDouble()
+                            tripModel.budget = it.toDouble()
                         }
                     },
                     isNumberInput = true,
@@ -93,23 +98,11 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
             ) {
                 Button(
                     onClick = {
-                        if (
-                            trip.destination.isNullOrBlank() ||
-//                            trip.tripTypeId <= 0 ||
-                            trip.departureDate == null
-                        ) {
-                            Message(
-                                context,
-                                "Preencha os campos obrigatórios",
-                            )
-                        }
-                        else {
-                            trip.save()
-
-                            Message(
-                                context,
-                                "Viagem salva",
-                            )
+                        if (tripModel.isValidForCreate()) {
+                            tripModel.save()
+                            Message(context, "Viagem salva")
+                        } else {
+                            Message(context, "Preencha os campos obrigatórios")
                         }
                     },
                     modifier = Modifier

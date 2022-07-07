@@ -65,7 +65,11 @@ fun ResetPasswordScreen(navController: NavHostController) {
 
                             navController.navigateUp()
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .height(65.dp)
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
                 ) {
                     Text(text = "Enviar e-mail para redefinir senha")
                 }

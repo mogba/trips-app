@@ -17,16 +17,16 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.example.api.finalapp.model.TripType
 
 @Composable
 fun DropDownField(
     label: String,
-    options: List<String>,
-    value: String,
-    onValueChange: (String) -> Unit,
+    options: List<TripType>,
+    value: TripType?,
+    onValueChange: (TripType) -> Unit,
 ) {
     var isDropDownExpanded by remember { mutableStateOf(false) }
-
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     val icon =
         if (isDropDownExpanded) Icons.Filled.ArrowDropUp
@@ -34,7 +34,7 @@ fun DropDownField(
 
     Box {
         OutlinedTextField(
-            value = value,
+            value = value?.name ?: "",
             label = { Text(text = label) },
             onValueChange = { },
             modifier = Modifier
@@ -70,12 +70,18 @@ fun DropDownField(
                     textFieldSize.width.toDp()
                 })
         ) {
-            options.forEach { option ->
-                DropdownMenuItem(onClick = {
-                    onValueChange(option)
-                    isDropDownExpanded = false
-                }) {
-                    Text(text = option)
+            if (options.isEmpty()) {
+                DropdownMenuItem(onClick = {}) {
+                    Text(text = "Sem dados")
+                }
+            } else {
+                options.forEach { option ->
+                    DropdownMenuItem(onClick = {
+                        onValueChange(option)
+                        isDropDownExpanded = false
+                    }) {
+                        Text(text = option.name)
+                    }
                 }
             }
         }

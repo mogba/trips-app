@@ -8,5 +8,5 @@ data class TripType(
     val name: String
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = -1
+    var id: Long = 0
 }

@@ -117,11 +117,12 @@ fun Login(
             ) {
                 Button(
                     onClick = {
-                        if (userModel.isValidForLogin()) {
-                            userModel.login(handleLogin)
-                        } else {
-                            Message(context, "Informe suas credenciais para entrar")
-                        }
+                        handleLogin(User("Gabriel", "gabriel@email.com", "123"))
+//                        if (userModel.isValidForLogin()) {
+//                            userModel.login(handleLogin)
+//                        } else {
+//                            Message(context, "Informe suas credenciais para entrar")
+//                        }
                     }
                 ) {
                     Text(text = "Entrar")

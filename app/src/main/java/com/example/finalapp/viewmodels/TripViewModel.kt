@@ -14,9 +14,9 @@ import java.time.LocalDate
 class TripViewModel(
     private val repository: TripRepository
 ): ViewModel() {
-    var id by mutableStateOf(-1L)
-    var tripTypeId by mutableStateOf(-1L)
-    var userId by mutableStateOf(-1L)
+    var id by mutableStateOf(0L)
+    var tripTypeId by mutableStateOf(0L)
+    var userId by mutableStateOf(0L)
     var destination by mutableStateOf("")
     var departureDate by mutableStateOf("")
     var arrivalDate by mutableStateOf("")
@@ -45,4 +45,11 @@ class TripViewModel(
     fun findAll(userId: Long): LiveData<List<Trip>> = repository.findAll(userId)
 
     fun delete(trip: Trip) = viewModelScope.launch { repository.delete(trip) }
+
+    fun isValidForCreate() =
+        !(
+            destination.isNullOrBlank() ||
+            tripTypeId <= 0 ||
+            departureDate.isNullOrBlank()
+        )
 }
