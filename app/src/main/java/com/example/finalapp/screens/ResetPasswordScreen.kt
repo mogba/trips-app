@@ -30,42 +30,44 @@ fun ResetPasswordScreen(navController: NavHostController) {
             NavigationTopAppBar(navController, "Redefinir senha")
         }
     ) {
-        Column(
-            verticalArrangement = Arrangement
-                .spacedBy(8.dp, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp)
-                ) {
-                    TextField(
-                        value = userModel.email,
-                        label = "E-mail",
-                        onChange = { userModel.email = it },
-                    )
-                }
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(10.dp)
-                ) {
-                    Button(
-                        onClick = {
+        Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+            ) {
+                TextField(
+                    value = userModel.email,
+                    label = "E-mail *",
+                    onChange = { userModel.email = it },
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)
+            ) {
+                Button(
+                    onClick = {
+                        if (userModel.email.isNullOrBlank()) {
+                            Message(
+                                context,
+                                "Informe o e-mail",
+                            )
+                        } else {
                             userModel.sendResetPasswordEmail()
+
                             Message(
                                 context,
                                 "Você receberá um e-mail para redefinir a senha",
                             )
+
                             navController.navigateUp()
                         }
-                    ) {
-                        Text(text = "Enviar e-mail para redefinir senha")
                     }
+                ) {
+                    Text(text = "Enviar e-mail para redefinir senha")
                 }
             }
         }

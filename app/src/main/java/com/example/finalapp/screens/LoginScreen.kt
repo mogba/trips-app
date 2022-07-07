@@ -9,6 +9,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.sourceInformationMarkerStart
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -70,7 +71,6 @@ fun Login(
     onResetPasswordRequest: () -> Unit
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
     ) {
@@ -79,11 +79,11 @@ fun Login(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(20.dp)
+                .padding(top = 35.dp, bottom = 10.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.hypersonic_missiles),
-                contentDescription = "",
+                painter = painterResource(id = R.drawable.hypersonic_missiles_square),
+                contentDescription = "Um míssil voando no céu deixando uma trilha de fumaça",
                 modifier = Modifier.fillMaxSize()
             )
         }
