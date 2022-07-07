@@ -6,7 +6,6 @@ import com.example.api.finalapp.dao.TripTypeDao
 import com.example.api.finalapp.model.TripType
 
 class TripTypeRepository(app: Application) {
-
     private val tripTypeDao: TripTypeDao = AppDatabase
         .getDB(app).tripTypeDao()
 

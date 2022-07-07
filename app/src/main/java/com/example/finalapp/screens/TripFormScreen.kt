@@ -16,9 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.finalapp.components.DatePickerField
-import com.example.finalapp.components.DropDownField
-import com.example.finalapp.components.TextField
+import com.example.finalapp.components.*
 import com.example.finalapp.viewmodels.TripViewModel
 import com.example.finalapp.viewmodels.TripViewModelFactory
 
@@ -40,21 +38,7 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(text = topBarTitle) },
-                navigationIcon = if (navController.previousBackStackEntry != null) {
-                    {
-                        IconButton(onClick = { navController.navigateUp() }) {
-                            Icon(
-                                imageVector = Icons.Filled.ArrowBack,
-                                contentDescription = "Voltar"
-                            )
-                        }
-                    }
-                } else {
-                    null
-                }
-            )
+            NavigationTopAppBar(navController, topBarTitle)
         }
     ) {
         Column {
@@ -114,19 +98,18 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
 //                            trip.tripTypeId <= 0 ||
                             trip.departureDate == null
                         ) {
-                            Toast.makeText(
+                            Message(
                                 context,
                                 "Preencha os campos obrigatórios",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            )
                         }
                         else {
                             trip.save()
-                            Toast.makeText(
+
+                            Message(
                                 context,
                                 "Viagem salva",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            )
                         }
                     },
                     modifier = Modifier

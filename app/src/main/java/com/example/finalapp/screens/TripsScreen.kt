@@ -92,7 +92,7 @@ fun TripListItem(
             .fillMaxWidth()
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .clickable {
-                onClick(if (trip.id == null) -1 else trip.id)
+                onClick(if (trip.id == null) 0 else trip.id)
             }
             .pointerInput(Unit) {
                 detectTapGestures(

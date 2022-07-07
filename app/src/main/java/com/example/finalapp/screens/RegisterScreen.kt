@@ -1,5 +1,6 @@
 package com.example.finalapp.screens
 
+import android.app.Application
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -12,16 +13,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.finalapp.components.Message
 import com.example.finalapp.components.PasswordField
 import com.example.finalapp.components.TextField
 import com.example.finalapp.viewmodels.UserViewModel
+import com.example.finalapp.viewmodels.UserViewModelFactory
 
 @Composable
 fun RegisterScreen(navController: NavHostController) {
-    Column() {
-        val user: UserViewModel = viewModel()
-
+    Column {
         val context = LocalContext.current
+        val app = context.applicationContext as Application
+
+        val userModel: UserViewModel = viewModel(factory = UserViewModelFactory(app))
 
         val columnModifier = Modifier
             .fillMaxWidth()
@@ -30,7 +34,7 @@ fun RegisterScreen(navController: NavHostController) {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text(text = "Criar cadastro") },
+                    title = { Text(text = "Cadastre-se") },
                     navigationIcon = if (navController.previousBackStackEntry != null) {
                         {
                             IconButton(onClick = { navController.navigateUp() }) {
@@ -53,32 +57,23 @@ fun RegisterScreen(navController: NavHostController) {
             ) {
                 Column(modifier = columnModifier) {
                     TextField(
-                        value = user.username,
-                        onChange = { user.username = it },
-                        label = "Usuário",
+                        value = userModel.name,
+                        onChange = { userModel.name = it },
+                        label = "Nome *",
                     )
                 }
                 Column(modifier = columnModifier) {
                     TextField(
-                        value = user.email,
-                        onChange = { user.email = it },
-                        label = "E-mail",
+                        value = userModel.email,
+                        onChange = { userModel.email = it },
+                        label = "E-mail *",
                     )
                 }
                 Column(modifier = columnModifier) {
                     PasswordField(
-                        value = user.password,
-                        onChange = { user.password = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 10.dp)
-                    )
-                }
-                Column(modifier = columnModifier) {
-                    PasswordField(
-                        label = "Confirmar senha",
-                        value = user.passwordConfirmation,
-                        onChange = { user.passwordConfirmation = it },
+                        value = userModel.password,
+                        onChange = { userModel.password = it },
+                        label = "Senha *",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 10.dp)
@@ -90,12 +85,21 @@ fun RegisterScreen(navController: NavHostController) {
                 ) {
                     Button(
                         onClick = {
-                            Toast.makeText(
-                                context,
-                                "Registro criado com sucesso",
-                                Toast.LENGTH_LONG
-                            ).show()
-                            navController.navigateUp()
+                            if (userModel.isValidForRegister()) {
+                                userModel.register()
+
+                                Message(
+                                    context,
+                                    "Cadastro efetuado",
+                                )
+
+                                navController.navigateUp()
+                            } else {
+                                Message(
+                                    context,
+                                    "Preencha os campos obrigatórios.",
+                                )
+                            }
                         },
                         modifier = Modifier
                             .height(65.dp)
