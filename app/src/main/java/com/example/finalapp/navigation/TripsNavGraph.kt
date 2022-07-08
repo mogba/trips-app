@@ -1,10 +1,13 @@
 package com.example.finalapp.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.example.finalapp.screens.TripFormScreen
 import com.example.finalapp.screens.TripsScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 fun NavGraphBuilder.tripsNavGraph(navController: NavHostController) {
     navigation(
         startDestination = ScreenManager.Trips.route,
@@ -15,9 +18,16 @@ fun NavGraphBuilder.tripsNavGraph(navController: NavHostController) {
         }
         composable(
             ScreenManager.TripForm.route,
-            arguments = listOf(navArgument("tripId") { defaultValue = "0" }),
+            arguments = listOf(
+                navArgument("tripId") {
+                    type = NavType.LongType
+                },
+            ),
         ) { backStackEntry ->
-            TripFormScreen(navController, backStackEntry.arguments?.getInt("tripId") ?: 0)
+            TripFormScreen(
+                navController,
+                backStackEntry.arguments?.getLong("tripId") ?: 0
+            )
         }
     }
 }

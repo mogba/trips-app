@@ -44,6 +44,19 @@ class TripViewModel(
 
     fun findAll(userId: Long): LiveData<List<Trip>> = repository.findAll(userId)
 
+//    fun loadTrip(id: Long) = viewModelScope.launch {
+//        var trip = repository.findById(id)
+//        this@TripViewModel.id = trip!!.id
+//        this@TripViewModel.tripTypeId = trip!!.tripTypeId!!
+//        this@TripViewModel.destination = trip!!.destination
+//        this@TripViewModel.userId = trip!!.userId!!
+//        this@TripViewModel.departureDate = trip!!.departureDate
+//        this@TripViewModel.arrivalDate = trip!!.arrivalDate!!
+//        this@TripViewModel.budget = trip!!.budget!!
+//    }
+
+    fun findById(id: Long): LiveData<Trip> = repository.findById(id)
+
     fun delete(trip: Trip) = viewModelScope.launch { repository.delete(trip) }
 
     fun isValidForCreate() =

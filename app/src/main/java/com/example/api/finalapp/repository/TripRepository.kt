@@ -17,7 +17,7 @@ class TripRepository(app: Application) {
 
     fun findAll(userId: Long): LiveData<List<Trip>> = tripDao.findAll(userId)
 
-    suspend fun findById(id: Long) = tripDao.findById(id)
+    fun findById(id: Long): LiveData<Trip> = tripDao.findById(id)
 
     suspend fun delete(trip: Trip) = tripDao.delete(trip)
 }

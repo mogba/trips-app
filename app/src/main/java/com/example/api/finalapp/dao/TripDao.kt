@@ -21,7 +21,7 @@ interface TripDao {
     fun findAll(userId: Long): LiveData<List<Trip>>
 
     @Query("select * from Trip where id = :id")
-    suspend fun findById(id: Long): Trip?
+    fun findById(id: Long): LiveData<Trip>
 
     @Delete
     suspend fun delete(trip: Trip)

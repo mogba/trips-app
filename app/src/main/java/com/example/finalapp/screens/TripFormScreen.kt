@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.api.finalapp.model.Trip
 import com.example.api.finalapp.model.TripType
 import com.example.finalapp.components.*
 import com.example.finalapp.viewmodels.TripTypeViewModel
@@ -26,7 +27,7 @@ import com.example.finalapp.viewmodels.TripViewModelFactory
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun TripFormScreen(navController: NavHostController, tripId: Int) {
+fun TripFormScreen(navController: NavHostController, tripId: Long?) {
     val context = LocalContext.current
     val app = context.applicationContext as Application
 
@@ -35,6 +36,23 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
     var selectedTripType: TripType? by remember { mutableStateOf(null) }
 
     val tripModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
+
+    val _tripId = tripId ?: 0
+
+    if (_tripId > 0) {
+        val editTrip by tripModel.findById(_tripId).observeAsState(null)
+
+        if (editTrip != null) {
+            tripModel.id = editTrip?.id ?: 0
+            tripModel.tripTypeId = editTrip?.tripTypeId ?: 0
+            tripModel.destination = editTrip?.destination ?: ""
+            tripModel.userId = editTrip?.userId ?: 0
+            tripModel.departureDate = editTrip?.departureDate ?: ""
+            tripModel.arrivalDate = editTrip?.arrivalDate ?: ""
+            tripModel.budget = editTrip?.budget ?: 0.0
+        }
+    }
+
     val topBarTitle = if (tripModel.id <= 0) "Adicionar viagem" else "Editar viagem"
 
     val columnModifier = Modifier
@@ -99,7 +117,11 @@ fun TripFormScreen(navController: NavHostController, tripId: Int) {
                 Button(
                     onClick = {
                         if (tripModel.isValidForCreate()) {
-                            tripModel.save()
+                            if (tripModel.id > 0) {
+                                tripModel.save()
+                            } else {
+                                tripModel
+                            }
                             Message(context, "Viagem salva")
                         } else {
                             Message(context, "Preencha os campos obrigatórios")
