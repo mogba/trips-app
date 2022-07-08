@@ -32,4 +32,8 @@ class TripTypeViewModel(
 
     fun delete(tripType: TripType) =
         viewModelScope.launch { repository.delete(tripType) }
+
+    fun insertStandardTripTypes() = viewModelScope.launch {
+        repository.insertStandardTripTypes()
+    }
 }

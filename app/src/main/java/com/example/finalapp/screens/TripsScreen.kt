@@ -2,10 +2,7 @@ package com.example.finalapp.screens
 
 import android.app.Application
 import android.os.Build
-import android.os.Message
-import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,23 +15,23 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.example.api.finalapp.model.Trip
 import com.example.finalapp.components.Message
 import com.example.finalapp.navigation.ScreenManager
+import com.example.finalapp.viewmodels.TripTypeViewModel
+import com.example.finalapp.viewmodels.TripTypeViewModelFactory
 import com.example.finalapp.viewmodels.TripViewModel
 import com.example.finalapp.viewmodels.TripViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.text.DecimalFormat
-import java.time.LocalDate
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -60,8 +57,15 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
     var showActionDialog by remember { mutableStateOf(false) }
     var selectedTrip: Trip? by remember { mutableStateOf(null) }
 
+    val tripTypeViewModel: TripTypeViewModel = viewModel(factory = TripTypeViewModelFactory(app))
+    val tripTypes by tripTypeViewModel.findAll().observeAsState(listOf())
+
+    if (tripTypes == null || tripTypes.isEmpty()) {
+        tripTypeViewModel.insertStandardTripTypes()
+    }
+
     val tripViewModel: TripViewModel = viewModel(factory = TripViewModelFactory(app))
-    val trips by tripViewModel.findAll(userId).observeAsState(listOf());
+    val trips by tripViewModel.findAll(userId).observeAsState(listOf())
 
     LazyColumn {
         items(items = trips) { trip ->

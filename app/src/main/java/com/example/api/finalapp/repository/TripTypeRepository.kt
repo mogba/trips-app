@@ -20,4 +20,6 @@ class TripTypeRepository(app: Application) {
     suspend fun findById(id: Int) = tripTypeDao.findById(id)
 
     suspend fun delete(tripType: TripType) = tripTypeDao.delete(tripType)
+
+    suspend fun insertStandardTripTypes() = tripTypeDao.insertStandardTripTypes()
 }

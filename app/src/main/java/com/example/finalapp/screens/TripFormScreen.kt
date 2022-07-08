@@ -75,7 +75,9 @@ fun TripFormScreen(navController: NavHostController, tripId: Long?) {
             Column(modifier = columnModifier) {
                 DropDownField(
                     label = "Tipo de viagem *",
-                    options = tripTypes,
+                    options = tripTypes.distinctBy { tripType ->
+                        tripType.name
+                    },
                     value = selectedTripType,
                     onValueChange = {
                         selectedTripType = it

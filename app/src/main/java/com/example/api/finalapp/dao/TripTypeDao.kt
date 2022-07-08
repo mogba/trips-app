@@ -20,4 +20,12 @@ interface TripTypeDao {
 
     @Query("select * from TripType where id = :id")
     suspend fun findById(id: Int): TripType?
+
+    @Query("""
+        INSERT INTO TripType
+            (name)
+        VALUES
+            ('Deslocamento'), ('Lazer'), ('Trabalho'), ('Mudança'), ('Somente ida')
+    """)
+    suspend fun insertStandardTripTypes()
 }

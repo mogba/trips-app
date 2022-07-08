@@ -23,7 +23,7 @@ sealed class ScreenManager(
     object Home: ScreenManager("home_screen")
     object Trips: ScreenManager("trips_screen")
     object TripForm: ScreenManager("tripform_screen?tripId={tripId}") {
-        fun routeWithArgs(tripId: Long?) = route.replace("{tripId}", "$tripId")
+        fun routeWithArgs(tripId: Long = 0) = route.replace("{tripId}", "$tripId")
     }
     object Settings: ScreenManager("settings_screen")
 }

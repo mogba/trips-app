@@ -1,5 +1,7 @@
 package com.example.finalapp.layouts
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
@@ -20,6 +22,7 @@ import com.example.finalapp.navigation.BottomBarNavGraph
 import com.example.finalapp.navigation.ScreenManager
 import com.example.finalapp.navigation.ScreenManagerComponent
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainLayout() {
     val navController = rememberNavController()
@@ -38,7 +41,7 @@ fun MainLayout() {
             if (currentDestination?.route == ScreenManagerComponent.Trips.route) {
                 FloatingActionButton(
                     onClick = {
-                        navController.navigate(ScreenManager.TripForm.route)
+                        navController.navigate(ScreenManager.TripForm.routeWithArgs())
                     },
                 ) {
                     Icon(Icons.Filled.Add, null)
