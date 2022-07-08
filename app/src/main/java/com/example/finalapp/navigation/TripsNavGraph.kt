@@ -8,13 +8,18 @@ import com.example.finalapp.screens.TripFormScreen
 import com.example.finalapp.screens.TripsScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun NavGraphBuilder.tripsNavGraph(navController: NavHostController) {
+fun NavGraphBuilder.tripsNavGraph(navController: NavHostController, userId: Long) {
     navigation(
         startDestination = ScreenManager.Trips.route,
         route = TRIPS_ROUTE,
     ) {
-        composable(ScreenManager.Trips.route) {
-            TripsScreen(navController, 0)
+        composable(
+            ScreenManager.Trips.route
+        ) {
+            TripsScreen(
+                navController,
+                0
+            )
         }
         composable(
             ScreenManager.TripForm.route,

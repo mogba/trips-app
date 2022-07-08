@@ -50,7 +50,7 @@ fun LoginScreen(navController: NavHostController) {
                     Message(context, "Olá ${user.name}")
 
                     userModel.isSessionActive = true
-                    navController.navigate(HOME_ROUTE)
+                    navController.navigate("home/${userModel.id}")
                 }
             },
             onRegisterRequest = {
@@ -117,12 +117,11 @@ fun Login(
             ) {
                 Button(
                     onClick = {
-                        handleLogin(User("Gabriel", "gabriel@email.com", "123"))
-//                        if (userModel.isValidForLogin()) {
-//                            userModel.login(handleLogin)
-//                        } else {
-//                            Message(context, "Informe suas credenciais para entrar")
-//                        }
+                        if (userModel.isValidForLogin()) {
+                            userModel.login(handleLogin)
+                        } else {
+                            Message(context, "Informe suas credenciais para entrar")
+                        }
                     }
                 ) {
                     Text(text = "Entrar")

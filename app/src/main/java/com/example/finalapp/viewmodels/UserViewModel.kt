@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(
     private val repository: AuthRepository,
 ) : ViewModel() {
+    var id by mutableStateOf(0L)
     var name by mutableStateOf("")
     var email by mutableStateOf("")
     var password by mutableStateOf("")
@@ -20,6 +21,9 @@ class UserViewModel(
 
     fun login(onSuccess: (User?) -> Unit) = viewModelScope.launch {
         val user = repository.login(email, password)
+        id = user?.id ?: 0
+        name = user?.name ?: ""
+        email = user?.email ?: ""
         onSuccess(user)
     }
 

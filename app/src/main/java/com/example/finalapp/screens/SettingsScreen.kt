@@ -6,9 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 
 @Composable
-fun SettingsScreen(navController: NavHostController, userId: Int?) {
+fun SettingsScreen(navController: NavHostController, userId: Long) {
     Column() {
-        Text("Settings")
+        Text("Settings - Usuário com ID ${userId}")
     }
 }
 

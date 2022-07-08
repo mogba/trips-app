@@ -89,8 +89,6 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
             text = {
                 Text(
                     "Selecione a ação ${selectedTrip?.id} - ${selectedTrip?.destination}",
-                    style = MaterialTheme.typography.h6,
-                    fontWeight = FontWeight.Bold
                 )
             },
             confirmButton = {
@@ -98,14 +96,14 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
                     onClick = {
                         if (selectedTrip != null) {
                             tripViewModel.delete(selectedTrip!!)
+                            showActionDialog = false
+                            selectedTrip = null
+
                             Message(context, "Viagem excluída.")
                         }
                     }
                 ) {
-                    Text(
-                        "Excluir viagem",
-                        fontSize = 18.sp,
-                    )
+                    Text("Excluir viagem", fontSize = 18.sp)
                 }
             },
             dismissButton = {
@@ -115,11 +113,7 @@ fun TripsList(userId: Long, onClickListItem: (tripId: Long) -> Unit) {
                         selectedTrip = null
                     }
                 ) {
-                    Text(
-                        "Cancelar",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Text("Cancelar", fontSize = 18.sp)
                 }
             },
         )

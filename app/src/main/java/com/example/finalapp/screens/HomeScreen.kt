@@ -14,14 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.finalapp.navigation.*
 
 @Composable
-fun HomeScreen(navController: NavHostController, userId: Int?) {
-    Column() {
-        Text(text = "Home")
-
-        Button(
-            onClick = { navController.navigateUp() }
-        ) {
-            Text(text = "Voltar")
-        }
+fun HomeScreen(navController: NavHostController, userId: Long) {
+    Column {
+        Text(text = "Home - Usuário com ID ${userId}")
     }
 }

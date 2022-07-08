@@ -2,6 +2,7 @@ package com.example.finalapp.components
 
 import android.app.DatePickerDialog
 import android.os.Build
+import android.util.Log
 import android.widget.DatePicker
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -27,14 +28,16 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun DatePickerField(
     label: String,
-    value: String?,
+    value: String,
     onChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
 
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
-    val date = remember { mutableStateOf(value ?: "") }
+    var date = remember { mutableStateOf("") }
+    date.value = value
+
     val dateObject =
         if (!value.isNullOrBlank()) LocalDate.parse(value, formatter)
         else LocalDate.now()

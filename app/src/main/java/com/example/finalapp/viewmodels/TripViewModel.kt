@@ -22,9 +22,6 @@ class TripViewModel(
     var arrivalDate by mutableStateOf("")
     var budget by mutableStateOf(0.0)
 
-    var trips by mutableStateOf(listOf<Trip>())
-        private set
-
     fun save() {
         val trip = Trip(
             tripTypeId,
@@ -34,6 +31,8 @@ class TripViewModel(
             arrivalDate,
             budget,
         )
+
+        trip.id = id
 
         viewModelScope.launch {
             if (trip.id <= 0) {

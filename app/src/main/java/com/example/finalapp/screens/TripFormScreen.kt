@@ -45,6 +45,7 @@ fun TripFormScreen(navController: NavHostController, tripId: Long?) {
         if (editTrip != null) {
             tripModel.id = editTrip?.id ?: 0
             tripModel.tripTypeId = editTrip?.tripTypeId ?: 0
+            selectedTripType = tripTypes.find { tripType -> tripType.id == tripModel.tripTypeId }
             tripModel.destination = editTrip?.destination ?: ""
             tripModel.userId = editTrip?.userId ?: 0
             tripModel.departureDate = editTrip?.departureDate ?: ""
@@ -119,11 +120,7 @@ fun TripFormScreen(navController: NavHostController, tripId: Long?) {
                 Button(
                     onClick = {
                         if (tripModel.isValidForCreate()) {
-                            if (tripModel.id > 0) {
-                                tripModel.save()
-                            } else {
-                                tripModel
-                            }
+                            tripModel.save()
                             Message(context, "Viagem salva")
                         } else {
                             Message(context, "Preencha os campos obrigatórios")

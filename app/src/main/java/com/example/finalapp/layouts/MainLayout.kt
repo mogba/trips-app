@@ -24,7 +24,7 @@ import com.example.finalapp.navigation.ScreenManagerComponent
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun MainLayout() {
+fun MainLayout(userId: Long) {
     val navController = rememberNavController()
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -57,7 +57,7 @@ fun MainLayout() {
         },
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding)) {
-            BottomBarNavGraph(navController = navController)
+            BottomBarNavGraph(navController = navController, userId)
         }
     }
 }
